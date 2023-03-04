@@ -1,4 +1,4 @@
-__version__ = '0.1b'
+__version__ = '0.1'
 from inspect import getouterframes, currentframe
 from sys import exit, getrecursionlimit, setrecursionlimit
 
