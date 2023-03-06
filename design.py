@@ -1,9 +1,16 @@
-import pygame
 import os
 
-abspath = os.getcwd() + "/"
-class Images:
+import pygame
 
+abspath = os.getcwd() + "/"
+
+
+class Text:
+    font_menus = pygame.font.Font(abspath + 'fonts/' + 'comic.ttf', 24)
+    font_window = pygame.font.Font(abspath + 'fonts/' + 'comic.ttf', 36)
+
+
+class Images:
     images = 'bird_up.png', 'bird_down.png', 'bird_crash.png'
     bird_images = [pygame.image.load(abspath + 'images/' + bird).convert_alpha() for bird in images]
     bird_up = pygame.transform.rotate(bird_images[1], angle=15)
