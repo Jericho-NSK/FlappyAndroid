@@ -3,14 +3,15 @@ from webbrowser import open_new_tab
 import pygame
 import pygame_menu
 
-from constants import HEIGHT, WIDTH, FPS
+from constants import HEIGHT, WIDTH, FPS, GITHUB_LINK
+from design import Text
 from walls import Wall
 
 
 class Menus:
     theme = pygame_menu.themes.THEME_BLUE.copy()
     theme.set_background_color_opacity(0.5)
-    # theme.widget_font = 'comicsansms'
+    theme.widget_font = Text.font_menus
     theme.widget_font_size = 30
     theme.widget_font_color = 'blue'
     theme.widget_selection_color = 'green'
@@ -21,18 +22,12 @@ class Menus:
                                  height=HEIGHT // 2,
                                  theme=theme,
                                  )
-    # main_menu.enable()
+
     settings_menu = pygame_menu.Menu(title='Settings',
                                      width=WIDTH // 2,
                                      height=HEIGHT // 2,
                                      theme=theme,
                                      )
-
-    about_menu = pygame_menu.Menu(title='About',
-                                  width=WIDTH // 2,
-                                  height=HEIGHT // 2,
-                                  theme=theme,
-                                  )
 
     about_menu = pygame_menu.Menu(title='About',
                                   width=WIDTH // 2,
@@ -83,21 +78,20 @@ class Menus:
     def create_about_menu(self):
         self.about_menu.add.label('NOT a flappy bird v1.0\nCreated by Jericho for Pet-project', font_color=(0, 135, 0))
         self.about_menu.add.vertical_margin(30)
-        self.about_menu.add.button('LINK TO GITHUB', lambda: open_new_tab(
-            'https://github.com/Jericho-NSK/PyPython/tree/main/2023-02.2%20Flappy%20Pygame%20Pet%20Project'))
+        self.about_menu.add.button('LINK TO GITHUB', lambda: open_new_tab(GITHUB_LINK))
         self.about_menu.add.button('BACK', pygame_menu.events.BACK)
 
     def create_exit_menu(self):
         question = self.exit_menu.add.label('ARE YOU SURE?')
-        self.exit_menu.add.vertical_fill(self.exit_menu.get_height() - 2 * question.get_height())
+        self.exit_menu.add.vertical_fill(self.exit_menu.get_height() - 2.1 * question.get_height())
 
         yes = self.exit_menu.add.button('YES', pygame_menu.events.EXIT)
         yes.set_float(float_status=True, origin_position=True)
-        yes.translate(0.15 * self.exit_menu.get_width(), self.exit_menu.get_height() - 2.3 * yes.get_height())
+        yes.translate(0.15 * self.exit_menu.get_width(), self.exit_menu.get_height() - 2.4 * yes.get_height())
 
         no = self.exit_menu.add.button('NO', pygame_menu.events.BACK)
         no.set_float(float_status=True, origin_position=True)
-        no.translate(0.85 * self.exit_menu.get_width() - no.get_width(), self.exit_menu.get_height() - 2.3 * no.get_height())
+        no.translate(0.85 * self.exit_menu.get_width() - no.get_width(), self.exit_menu.get_height() - 2.4 * no.get_height())
 
     def create_crash_menu(self, game):
         self.crash_menu.add.label(f'YOU LOST A LIFE!\nLIVES LEFT: {game.lives} '
