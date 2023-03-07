@@ -17,7 +17,7 @@ if system() != 'Windows':
 
 else:
     HEIGHT = 720
-    WIDTH = HEIGHT * pygame.display.Info().current_w / pygame.display.Info().current_h
+    WIDTH = 1450
     WINDOW = pygame.display.set_mode(size=(WIDTH, HEIGHT),
                                      flags=pygame.DOUBLEBUF | pygame.HWSURFACE | pygame.NOFRAME,
                                      depth=32,
