@@ -23,3 +23,6 @@ class Images:
 
     wall_image = pygame.image.load(abspath + 'images/column.png').convert_alpha()
     heart = pygame.image.load(abspath + 'images/heart.png').convert_alpha()
+
+    big_jump = pygame.image.load(abspath + 'images/big_jump.png').convert_alpha()
+    small_jump = pygame.image.load(abspath + 'images/small_jump.png').convert_alpha()
