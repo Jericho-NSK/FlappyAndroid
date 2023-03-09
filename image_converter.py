@@ -9,18 +9,19 @@ Could create new RGBA .png file in 'images' folder.
 
 import os
 from io import BytesIO
+from typing import Union
 
 import PIL.Image
 import pygame
 
 
 def convert(filename: str,
-            width: int | float | None = None,
-            height: int | float | None = None,
+            width: Union[int, float, None] = None,
+            height: Union[int, float, None] = None,
             square: bool = True,
             new_file: bool = True,
             for_pygame: bool = True,
-            ) -> pygame.Surface | PIL.Image.Image | bytes:
+            ) -> Union[pygame.Surface, PIL.Image.Image, bytes]:
     """
     Convert to the image with new size to bytecode WITH OR WITHOUT creating a new file
     """
@@ -62,5 +63,3 @@ def convert(filename: str,
             return pil_image
     else:
         return bytes_image
-
-# image = PIL.Image.open(os.path.join(os.getcwd(), 'images', f'{filename}.png').reduce(5)  # Уменьшение в 5 раз
