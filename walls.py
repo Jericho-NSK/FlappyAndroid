@@ -34,9 +34,8 @@ class Wall(pygame.sprite.Sprite):
                         (game.score // 100 > DIFFICULTY_MODS[-1] and
                          game.score % 5000 == 0)):
                     Wall.speed += 1
-                    print(perf_counter() - game.start)
-                    game.start = perf_counter()
-                    # pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
+                    print(perf_counter() - game.start)  #temp
+                    game.start = perf_counter()  #temp
                     window.elements.speed = Text.font_window.render(f'SPEED: {Wall.speed}', True, 'red')
 
     @staticmethod

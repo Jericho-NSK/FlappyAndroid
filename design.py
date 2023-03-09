@@ -28,7 +28,7 @@ class Images:
     heart = convert('heart', 0.1 * HEIGHT)
 
     big_jump = convert('big_jump', 0.15 * HEIGHT)
-    small_jump = convert('small_jump', 0.055 * HEIGHT)
+    small_jump = convert('small_jump', 0.1 * HEIGHT)
 
     pygame.display.set_caption('NOT a flappy bird')
     pygame.display.set_icon(bird_images[-1])

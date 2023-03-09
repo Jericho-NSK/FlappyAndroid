@@ -60,12 +60,11 @@ class Game:
         self.mainloop()
 
     def mainloop(self):
-        # pygame.time.set_timer(pygame.USEREVENT, 3000 // Wall.speed)
 
         if len(getouterframes(currentframe())) > getrecursionlimit() - 100:
             setrecursionlimit(getrecursionlimit() + 100)
 
-        self.start = perf_counter()
+        self.start = perf_counter()  #temp
 
         while True:
             self.game_starts = True
@@ -74,6 +73,7 @@ class Game:
                 Wall.create_wall(game=self)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    pygame.quit()
                     exit()
 
                 elif event.type == pygame.FINGERDOWN:
