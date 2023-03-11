@@ -36,10 +36,11 @@ class Window:
             self.window.blit(self.elements.escape_down, self.elements.escape_down_rect.topleft)
             self.elements.escape_timer -= 1
 
-        self.control_buttons()
+
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
         if game.game_starts:
+            self.control_buttons()
             pygame.display.update()
 
         CLOCK.tick(FPS)
