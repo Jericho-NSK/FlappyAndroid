@@ -7,7 +7,7 @@ from time import perf_counter
 import pygame
 
 from bird import Bird
-from constants import START_LIVES, START_TRACK, BIRD_START, SPEED, FPS, WIDTH, HEIGHT
+from constants import START_LIVES, START_TRACK, BIRD_START, SPEED, FPS, WIDTH, HEIGHT, SYSTEM
 from design import Images, Text
 from menus import Menus
 from walls import Wall
@@ -20,7 +20,6 @@ class Game:
     score = 0
 
     def __init__(self):
-        self.breakdown = False
         self.game_starts = False
         self.track = START_TRACK
         self.main_window = Window(self)
@@ -28,9 +27,9 @@ class Game:
         self.menu = Menus(self)
         self.menu.call_menu(self)
 
-    def crash(self):
+    def crash(self, breakdown):
         for wall in self.walls:
-            if wall.rect.collidepoint(self.bird.rect.midright) or wall.rect.collidepoint(self.bird.rect.bottomright) or self.breakdown:
+            if wall.rect.collidepoint(self.bird.rect.midright) or wall.rect.collidepoint(self.bird.rect.bottomright) or breakdown:
                 self.game_starts = False
                 self.track = START_TRACK
                 self.bird.timer = 0
@@ -40,7 +39,6 @@ class Game:
                 self.lives -= 1
                 self.menu.crash_menu.enable()
                 break
-            # self.sound_catch.play()
 
     def new_game(self):
         self.lives = START_LIVES
@@ -50,7 +48,6 @@ class Game:
         self.resume_game()
 
     def resume_game(self):
-        self.breakdown = False
         self.menu.disable()
         self.game_starts = True
         self.bird.rect.center = BIRD_START
@@ -58,6 +55,31 @@ class Game:
         for wall in self.walls:
             wall.kill()
         self.mainloop()
+
+    def control_android(self, event):
+        if event.type == pygame.FINGERDOWN:
+            if self.main_window.elements.big_jump.collidepoint(event.x, event.y):
+                self.bird.jump = 35
+            print('FINDERDOWN', event, event.type)
+
+        elif event.type == pygame.FINGERMOTION:
+            print('FINGERMOTION', event, event.type)
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_AC_BACK and not self.main_window.elements.escape_timer:
+                self.main_window.elements.escape_timer = 3 * FPS
+            elif event.key == pygame.K_AC_BACK:
+                self.crash(breakdown=True)
+
+    def control_windows(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE and not self.main_window.elements.escape_timer:
+                self.main_window.elements.escape_timer = 3 * FPS
+            elif event.key == pygame.K_ESCAPE:
+                self.crash(breakdown=True)
+            elif event.key == pygame.K_SPACE:
+                self.bird.jump = 35
+            elif event.key == pygame.K_w or event.key == pygame.K_UP:
+                self.bird.jump = 25
 
     def mainloop(self):
 
@@ -76,19 +98,9 @@ class Game:
                     pygame.quit()
                     exit()
 
-                elif event.type == pygame.FINGERDOWN:
-                    self.bird.jump = 35
-                elif event.type == pygame.FINGERMOTION:
-                    print(event, event.type)
-                elif event.type == pygame.KEYDOWN:
-                    if (event.key == pygame.K_ESCAPE or event.key == pygame.K_AC_BACK) and not self.main_window.elements.escape_timer:
-                        self.main_window.elements.escape_timer = 3 * FPS
-                    elif event.key == pygame.K_ESCAPE or event.key == pygame.K_AC_BACK:
-                        self.breakdown = True
-                    elif event.key == pygame.K_SPACE:
-                        self.bird.jump = 35
-                    elif event.key == pygame.K_w or event.key == pygame.K_UP:
-                        self.bird.jump = 25
+
+                self.control_android(event=event) if SYSTEM !='Windows' else self.control_windows(event=event)
+
 
 
 
