@@ -72,11 +72,10 @@ class Game:
 
             Controller.control_android(game=self) if SYSTEM != 'Windows' else Controller.control_windows(game=self)
             self.walls.update(self, self.main_window)
-            # self.crash()
+            self.crash()
             if not self.game_starts:
                 self.menu.call_menu(self, crash=True)
 
-            self.main_window.bg_rect.x -= 1
             self.main_window.update_window(self)
 
 

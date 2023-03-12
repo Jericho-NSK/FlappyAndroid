@@ -15,7 +15,6 @@ class Bird(pygame.Surface):
         self.image = Images.bird_images[1]
         self.jump = 0
         self.wings_up = False
-        self.moving = False
         self.move_left = False
         self.move_right = False
         self.move_down = False
@@ -63,9 +62,9 @@ class Bird(pygame.Surface):
             self.gravity()
             if self.move_left and self.rect.centerx > 0:
                 self.rect.centerx -= 4
-            elif self.move_right and self.rect.right < WIDTH - self.rect.width:
+            if self.move_right and self.rect.right < WIDTH - self.rect.width:
                 self.rect.centerx += 4
-            elif self.move_down and self.jump <= 15:
+            if self.move_down and self.jump <= 25:
                 self.rect.centery += 2
                 self.image = Images.bird_down
 

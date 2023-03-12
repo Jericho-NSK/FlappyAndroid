@@ -13,6 +13,7 @@ class Window:
         self.elements = Elements(game)
 
     def update_window(self, game):
+
         self.window.blit(Images.bg, (self.bg_rect.x, 0))
         self.window.blit(Images.bg, (self.bg_rect.x + self.bg_rect.width, 0))
         if self.bg_rect.x <= - self.bg_rect.width:
@@ -36,12 +37,13 @@ class Window:
             self.window.blit(self.elements.escape_down, self.elements.escape_down_rect.topleft)
             self.elements.escape_timer -= 1
 
-        self.control_buttons()
+        # self.control_buttons()
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
         if game.game_starts:
-            if SYSTEM == 'Windows':...
-            #     # self.control_buttons()
+            if SYSTEM != 'Windows':
+                self.control_buttons()
+            self.bg_rect.x -= 1
             pygame.display.update()
 
         CLOCK.tick(FPS)
@@ -55,7 +57,13 @@ class Window:
                 (Images.small_jump, self.elements.left_jump.topleft),
                 (self.elements.right_jump_bg, self.elements.right_jump_bg_rect),
                 (Images.small_jump, self.elements.right_jump.topleft),
-                (self.elements.touchpad_bg, self.elements.touchpad_bg_rect.topleft),
+                (self.elements.touchpad, self.elements.touchpad_rect.topleft),
                 (self.elements.joystick, self.elements.joystick_rect.topleft),
+
+                # (self.elements.touch_left, self.elements.touch_left_rect.topleft),
+                # (self.elements.touch_right, self.elements.touch_right_rect.topleft),
+                # (self.elements.touch_down, self.elements.touch_down_rect.topleft),
+                # (self.elements.touch_down_left, self.elements.touch_down_left_rect.topleft),
+                # (self.elements.touch_down_right, self.elements.touch_down_right_rect.topleft),
             ),
             doreturn=False)

@@ -16,8 +16,8 @@ class Elements:
         self.big_jump_button(pos_width=0.8, pos_height=0.7, element_color=(10, 90, 90, 90), outer_color=(0, 0, 0, 100))
         self.right_jump_button(pos_width=0.74, pos_height=0.9, element_color=(90, 90, 10, 90), outer_color=(0, 0, 0, 100))
         self.left_jump_button(pos_width=0.13, pos_height=0.63, element_color=(90, 10, 90, 20), outer_color=(0, 0, 0, 50))
-        self.touchpad(pos_width=0.2, pos_height=0.86, element_color=(90, 90, 10, 90), outer_color=(0, 0, 0, 100))
-        self.mover(element_color=(255, 255, 255, 130), outer_color=(0, 0, 0, 120))
+        self.touchpad_creator(pos_width=0.2, pos_height=0.86, element_color=(90, 90, 10, 90), outer_color=(0, 0, 0, 100))
+        self.joyctick_creator(element_color=(255, 255, 255, 130), outer_color=(0, 0, 0, 120))
 
     def escape_elements(self):
         self.escape_up = Text.font_window.render('NO PAUSES! ONLY HARDCORE!', True, 'red')
@@ -107,31 +107,57 @@ class Elements:
         self.left_jump.topleft = (self.left_jump_bg_rect.centerx - self.left_jump.width // 2,
                                   self.left_jump_bg_rect.centery - self.left_jump.height // 2)
 
-    def touchpad(self, pos_width, pos_height, element_color, outer_color):
-        self.touchpad_bg = pygame.Surface((HEIGHT * 0.4, HEIGHT * 0.2)).convert_alpha()
-        self.touchpad_bg_rect = self.touchpad_bg.get_rect()
-        self.touchpad_bg_rect.center = int(WIDTH * pos_width), int(HEIGHT * pos_height)
-        self.touchpad_bg.fill((0, 0, 0, 0))
+    def touchpad_creator(self, pos_width, pos_height, element_color, outer_color):
+        self.touchpad = pygame.Surface((HEIGHT * 0.4, HEIGHT * 0.2)).convert_alpha()
+        self.touchpad_rect = self.touchpad.get_rect()
+        self.touchpad_rect.center = int(WIDTH * pos_width), int(HEIGHT * pos_height)
+        self.touchpad.fill((0, 0, 0, 0))
+
+        self.touch_left = pygame.Surface((self.touchpad_rect.width * 0.45, self.touchpad_rect.height * 0.5)).convert_alpha()
+        self.touch_left_rect = self.touch_left.get_rect()
+        self.touch_left_rect.topleft = self.touchpad_rect.topleft
+        self.touch_left.fill((200, 0, 0, 200))
+
+        self.touch_right = pygame.Surface((self.touch_left_rect.width, self.touch_left_rect.height)).convert_alpha()
+        self.touch_right_rect = self.touch_left.get_rect()
+        self.touch_right_rect.topleft = self.touchpad_rect.topright[0] - self.touch_right_rect.width, self.touchpad_rect.y
+        self.touch_right.fill((0, 200, 0, 200))
+
+        self.touch_down = pygame.Surface((self.touchpad_rect.width, self.touchpad_rect.height * 0.65)).convert_alpha()
+        self.touch_down_rect = self.touch_down.get_rect()
+        self.touch_down_rect.topleft = self.touchpad_rect.x, self.touchpad_rect.y + self.touchpad_rect.height - self.touch_down_rect.height
+        self.touch_down.fill((0, 0, 200, 200))
+
+        self.touch_down_left = pygame.Surface((self.touchpad_rect.width * 0.35, self.touch_left_rect.height)).convert_alpha()
+        self.touch_down_left_rect = self.touch_down_left.get_rect()
+        self.touch_down_left_rect.topleft = self.touchpad_rect.x, self.touchpad_rect.y + self.touch_left_rect.height
+        self.touch_down_left.fill((0, 200, 200, 200))
+
+        self.touch_down_right = pygame.Surface((self.touch_down_left_rect.width, self.touch_left_rect.height)).convert_alpha()
+        self.touch_down_right_rect = self.touch_down_right.get_rect()
+        self.touch_down_right_rect.topleft = (self.touchpad_rect.topright[0] - self.touch_down_right_rect.width,
+                                              self.touchpad_rect.y + self.touch_right_rect.height)
+        self.touch_down_right.fill((200, 200, 0, 200))
 
         pygame.draw.circle(
-            surface=self.touchpad_bg,
+            surface=self.touchpad,
             color=element_color,
-            center=(self.touchpad_bg_rect.width // 2, 0),
-            radius=self.touchpad_bg_rect.height,
+            center=(self.touchpad_rect.width // 2, 0),
+            radius=self.touchpad_rect.height,
         )
 
         pygame.draw.circle(
-            surface=self.touchpad_bg,
+            surface=self.touchpad,
             color=outer_color,
-            center=(self.touchpad_bg_rect.width // 2, 0),
-            radius=self.touchpad_bg_rect.height,
+            center=(self.touchpad_rect.width // 2, 0),
+            radius=self.touchpad_rect.height,
             width=14,
         )
 
-    def mover(self, element_color, outer_color):
+    def joyctick_creator(self, element_color, outer_color):
         self.joystick = pygame.Surface((HEIGHT * 0.08, HEIGHT * 0.08)).convert_alpha()
         self.joystick_rect = self.joystick.get_rect()
-        self.joystick_rect.midtop = self.touchpad_bg_rect.x + self.touchpad_bg_rect.width // 2, self.touchpad_bg_rect.y
+        self.joystick_rect.midtop = self.touchpad_rect.x + self.touchpad_rect.width // 2, self.touchpad_rect.y
         self.joystick.fill((0, 0, 0, 0))
 
         pygame.draw.circle(

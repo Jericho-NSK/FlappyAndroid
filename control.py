@@ -5,6 +5,7 @@ from design import Images
 
 
 class Controller:
+    finger = None
 
     @staticmethod
     def control_android(game):
@@ -12,44 +13,53 @@ class Controller:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
             if event.type == pygame.FINGERDOWN:
-                event.finger_id = 0
                 if game.main_window.elements.big_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                     game.bird.jump = 37
-                elif game.main_window.elements.left_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT) or \
+                if game.main_window.elements.left_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT) or \
                         game.main_window.elements.right_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                     game.bird.jump = 30
+                if game.main_window.elements.touchpad_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
+                    game.main_window.elements.joystick_rect.center = event.x * WIDTH, event.y * HEIGHT
+                    Controller.finger = event.finger_id
 
             elif event.type == pygame.FINGERMOTION:
-                event.finger_id = 1
-                if game.main_window.elements.touchpad_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
+                if game.main_window.elements.touchpad_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                     game.main_window.elements.joystick_rect.center = event.x * WIDTH, event.y * HEIGHT
-                    game.bird.moving = True
-                    if abs(event.dx) > event.dy and event.dx < 0:
+                    if game.main_window.elements.touch_down_left_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
+                        game.bird.move_left = True
+                        game.bird.move_right = False
+                        game.bird.move_down = True
+                    elif game.main_window.elements.touch_left_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                         game.bird.move_left = True
                         game.bird.move_right = False
                         game.bird.move_down = False
-                    elif abs(event.dx) > event.dy and event.dx > 0:
+                    elif game.main_window.elements.touch_down_right_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
+                        game.bird.move_left = False
+                        game.bird.move_right = True
+                        game.bird.move_down = True
+                    elif game.main_window.elements.touch_right_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                         game.bird.move_left = False
                         game.bird.move_right = True
                         game.bird.move_down = False
-                    elif abs(event.dx) < event.dy and event.dy > 0.003:
+                    elif game.main_window.elements.touch_down_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                         game.bird.move_left = False
                         game.bird.move_right = False
                         game.bird.move_down = True
+                    else:
+                        game.bird.move_left = False
+                        game.bird.move_right = False
+                        game.bird.move_down = False
 
-                print('FINGERMOTION', event)
-
-            elif event.type == pygame.FINGERUP and game.bird.moving:
-                game.main_window.elements.joystick_rect.midtop = (game.main_window.elements.touchpad_bg_rect.x +
-                                                                  game.main_window.elements.touchpad_bg_rect.width // 2,
-                                                                  game.main_window.elements.touchpad_bg_rect.y)
+            elif event.type == pygame.FINGERUP and event.finger_id == Controller.finger:
+                game.main_window.elements.joystick_rect.midtop = (game.main_window.elements.touchpad_rect.x +
+                                                                  game.main_window.elements.touchpad_rect.width // 2,
+                                                                  game.main_window.elements.touchpad_rect.y)
                 game.bird.image = Images.bird_images[game.bird.wings_up]
-                game.bird.moving = False
                 game.bird.move_left = False
                 game.bird.move_right = False
                 game.bird.move_down = False
-                print('FINGERUP', event, type(event.finger_id), event.finger_id, type(event.touch_id), event.touch_id)
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_AC_BACK and not game.main_window.elements.escape_timer:
