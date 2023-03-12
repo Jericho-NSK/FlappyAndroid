@@ -15,10 +15,14 @@ class Bird(pygame.Surface):
         self.image = Images.bird_images[1]
         self.jump = 0
         self.wings_up = False
+        self.moving = False
+        self.move_left = False
+        self.move_right = False
+        self.move_down = False
 
     def jumping(self):
         """Jumping mechanics"""
-        if self.jump > 14:
+        if self.jump > 10:
             self.image = Images.bird_up
             self.rect.centery -= int((0.1 * self.jump) ** 2) - 1
             self.jump -= 1
@@ -33,7 +37,7 @@ class Bird(pygame.Surface):
         """Changes the position of the wings"""
         if not self.timer and not self.jump:
             self.image = Images.bird_images[self.wings_up]
-            self.wings_up ^= 1  # is equal to self.wings_up = not self.wings_up
+            self.wings_up ^= 1  # is equal with self.wings_up = not self.wings_up
             if SYSTEM != 'Windows':
                 self.timer = FPS // 10
             else:
@@ -44,7 +48,7 @@ class Bird(pygame.Surface):
 
     def gravity(self):
         """Gravity and limits"""
-        self.rect.centery += 1
+        self.rect.centery += 2
         if self.rect.bottom > HEIGHT - self.rect.height // 2:
             self.rect.bottom = HEIGHT - self.rect.height // 2
         if self.rect.top < -self.rect.height // 2:
@@ -57,3 +61,11 @@ class Bird(pygame.Surface):
 
         if game.game_starts:
             self.gravity()
+            if self.move_left and self.rect.centerx > 0:
+                self.rect.centerx -= 4
+            elif self.move_right and self.rect.right < WIDTH - self.rect.width:
+                self.rect.centerx += 4
+            elif self.move_down and self.jump <= 15:
+                self.rect.centery += 2
+                self.image = Images.bird_down
+

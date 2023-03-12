@@ -70,10 +70,8 @@ class Game:
             if not self.walls.sprites() or self.walls.sprites()[-1].rect.right < WIDTH * 0.85 - 2 * Wall.speed ** 2:
                 Wall.create_wall(game=self)
 
-            Controller.control_android(self) if SYSTEM != 'Windows' else Controller.control_windows(self)
-
+            Controller.control_android(game=self) if SYSTEM != 'Windows' else Controller.control_windows(game=self)
             self.walls.update(self, self.main_window)
-
             # self.crash()
             if not self.game_starts:
                 self.menu.call_menu(self, crash=True)

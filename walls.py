@@ -40,7 +40,7 @@ class Wall(pygame.sprite.Sprite):
 
     @staticmethod
     def create_wall(game):
-        dy = int(HEIGHT * uniform(-0.1, 0.1))
+        dy = int(HEIGHT * uniform(-0.2, 0.2))
         game.track += dy
         if game.track > HEIGHT - 150:
             game.track -= abs(2 * dy)

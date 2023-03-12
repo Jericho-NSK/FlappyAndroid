@@ -4,7 +4,8 @@ import pygame
 
 pygame.init()
 
-SPEED = 10
+SPEED = 1
+
 SYSTEM = system()
 if SYSTEM != 'Windows':
     FPS = 120

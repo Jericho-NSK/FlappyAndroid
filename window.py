@@ -1,6 +1,6 @@
 import pygame
 
-from constants import WIDTH, FPS, WINDOW, CLOCK
+from constants import WIDTH, FPS, WINDOW, CLOCK, SYSTEM
 from design import Images
 from elements import Elements
 
@@ -40,7 +40,8 @@ class Window:
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
         if game.game_starts:
-            # self.control_buttons()
+            if SYSTEM == 'Windows':...
+            #     # self.control_buttons()
             pygame.display.update()
 
         CLOCK.tick(FPS)
