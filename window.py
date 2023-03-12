@@ -36,11 +36,11 @@ class Window:
             self.window.blit(self.elements.escape_down, self.elements.escape_down_rect.topleft)
             self.elements.escape_timer -= 1
 
-
+        self.control_buttons()
         if game.bird.image != Images.bird_images[-1]:
             game.bird.flying(game)
         if game.game_starts:
-            self.control_buttons()
+            # self.control_buttons()
             pygame.display.update()
 
         CLOCK.tick(FPS)
@@ -54,5 +54,7 @@ class Window:
                 (Images.small_jump, self.elements.left_jump.topleft),
                 (self.elements.right_jump_bg, self.elements.right_jump_bg_rect),
                 (Images.small_jump, self.elements.right_jump.topleft),
+                (self.elements.touchpad_bg, self.elements.touchpad_bg_rect.topleft),
+                (self.elements.joystick, self.elements.joystick_rect.topleft),
             ),
             doreturn=False)
