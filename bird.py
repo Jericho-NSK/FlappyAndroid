@@ -57,14 +57,3 @@ class Bird(pygame.Surface):
 
         if game.game_starts:
             self.gravity()
-
-            key = pygame.key.get_pressed()
-            if any((key[pygame.K_a], key[pygame.K_LEFT])) and self.rect.centerx > 0:
-                self.rect.centerx -= 4
-            if any((key[pygame.K_d], key[pygame.K_RIGHT])) and self.rect.right < WIDTH - self.rect.width:
-                self.rect.centerx += 4
-            if any((key[pygame.K_s], key[pygame.K_DOWN])) and not self.jump:
-                self.rect.centery += 1
-                self.image = Images.bird_down
-            if not any((key[pygame.K_s], key[pygame.K_DOWN], self.jump)):
-                self.image = Images.bird_images[self.wings_up]
