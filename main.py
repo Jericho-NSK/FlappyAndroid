@@ -8,7 +8,7 @@ import pygame
 
 from bird import Bird
 from constants import START_LIVES, START_TRACK, BIRD_START, SPEED, FPS, WIDTH, HEIGHT, SYSTEM
-from design import Images, Text
+from design import Images
 from menus import Menus
 from walls import Wall
 from window import Window
@@ -27,9 +27,10 @@ class Game:
         self.menu = Menus(self)
         self.menu.call_menu(self)
 
-    def crash(self, breakdown):
+    def crash(self, breakdown=False):
         for wall in self.walls:
             if wall.rect.collidepoint(self.bird.rect.midright) or wall.rect.collidepoint(self.bird.rect.bottomright) or breakdown:
+                break
                 self.game_starts = False
                 self.track = START_TRACK
                 self.bird.timer = 0
@@ -58,8 +59,11 @@ class Game:
 
     def control_android(self, event):
         if event.type == pygame.FINGERDOWN:
-            if self.main_window.elements.big_jump.collidepoint(event.x, event.y):
+            if self.main_window.elements.big_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
                 self.bird.jump = 35
+            elif self.main_window.elements.left_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT) or \
+                    self.main_window.elements.right_jump_bg_rect.collidepoint(event.x * WIDTH, event.y * HEIGHT):
+                self.bird.jump = 25
             print('FINDERDOWN', event, event.type)
 
         elif event.type == pygame.FINGERMOTION:
@@ -86,7 +90,7 @@ class Game:
         if len(getouterframes(currentframe())) > getrecursionlimit() - 100:
             setrecursionlimit(getrecursionlimit() + 100)
 
-        self.start = perf_counter()  #temp
+        self.start = perf_counter()  # temp
 
         while True:
             self.game_starts = True
@@ -98,16 +102,11 @@ class Game:
                     pygame.quit()
                     exit()
 
-
-                self.control_android(event=event) if SYSTEM !='Windows' else self.control_windows(event=event)
-
-
-
-
+                self.control_android(event=event) if SYSTEM != 'Windows' else self.control_windows(event=event)
 
             self.walls.update(self, self.main_window)
 
-            # self.crash()
+            self.crash()
             if not self.game_starts:
                 self.menu.call_menu(self, crash=True)
 
